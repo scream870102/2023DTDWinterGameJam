@@ -24,11 +24,9 @@ public class Sonar : MonoBehaviour
         player1, player2
     }
 
-    public GameObject anotherPlayer;
     public enum SonarState{
         direct, indirect
     }
-    public Player player;
     [SerializeField]private GameObject sonarPrefab;
     [SerializeField]private float sonarMinRadius = 0.5f;
     [SerializeField]private float sonarMaxRadius = 3;
