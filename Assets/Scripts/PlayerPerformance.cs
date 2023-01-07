@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using BIGJ2023.Common;
 using Scream.UniMO.Common;
 using UnityEngine;
 using Logger = Scream.UniMO.Common.Logger;
@@ -27,8 +28,8 @@ public class OnPlayerAction : IDomainEvent
 
 public class PlayerPerformance : MonoBehaviour
 {
-
-    public KeyCode[] DetectKeyCode, CounterKeyCode;
+    private const string stunnedEndEffectName = "Healed";
+    public KeyCode DetectKeyCode, CounterKeyCode;
     public GameObject[] players;
     public GameObject Treasure, GameManager;
     public int TreasureOwner = -1;
@@ -41,24 +42,20 @@ public class PlayerPerformance : MonoBehaviour
     private void Update()
     {
         // release sonar
-        for (int i = 0; i < players.Length && Active; i++)
+        if (Active && Input.GetKeyDown(DetectKeyCode))
         {
-            if (Input.GetKey(DetectKeyCode[i]))
-            {
-                OnPlayerAction eventParam = new OnPlayerAction();
-                eventParam.player = players[i];
-                eventParam.ActionState = PlayerAction.detect;
-                DomainEvents.Raise<OnPlayerAction>(eventParam);
-            }
-            if (Input.GetKey(CounterKeyCode[i]))
-            {
-                OnPlayerAction eventParam = new OnPlayerAction();
-                eventParam.player = players[i];
-                eventParam.ActionState = PlayerAction.counter;
-                DomainEvents.Raise<OnPlayerAction>(eventParam);
-            }
+            OnPlayerAction eventParam = new OnPlayerAction();
+            eventParam.player = gameObject;
+            eventParam.ActionState = PlayerAction.detect;
+            DomainEvents.Raise<OnPlayerAction>(eventParam);
         }
-
+        if (Active && Input.GetKeyDown(CounterKeyCode))
+        {
+            OnPlayerAction eventParam = new OnPlayerAction();
+            eventParam.player = gameObject;
+            eventParam.ActionState = PlayerAction.counter;
+            DomainEvents.Raise<OnPlayerAction>(eventParam);
+        }
     }
 
     // pick treasure
@@ -124,7 +121,9 @@ public class PlayerPerformance : MonoBehaviour
     {
         float StunnedTime = transform.gameObject.GetComponent<PlayerMove>().StunnedTime;
         yield return new WaitForSeconds(StunnedTime);
-        Logger.Log($"On Stunned End {gameObject.name}");
+        //TODO: Fix pos
+        ParticleSystem fx = FxManager.Instance.GetEffect(stunnedEndEffectName);
+        fx.gameObject.transform.position = transform.position;
         Active = true;
     }
     private void OnDestroy()

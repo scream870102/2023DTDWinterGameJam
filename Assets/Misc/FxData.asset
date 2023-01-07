@@ -15,3 +15,7 @@ MonoBehaviour:
   rawData:
   - Key: Stunned
     Value: {fileID: 5811234105462895570, guid: 3125332dfa5e50b4ab648fa89dc146c2, type: 3}
+  - Key: Healed
+    Value: {fileID: 8809054773803636706, guid: 37c5a51ef12d1f0419d4b379b97ded34, type: 3}
+  - Key: CounterSuccess
+    Value: {fileID: 8809054773803636706, guid: 9818ae252b24b6042973a9c246bd0c2c, type: 3}

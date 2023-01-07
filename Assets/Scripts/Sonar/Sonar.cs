@@ -36,6 +36,7 @@ public class Sonar : MonoBehaviour
     }
 
     private const string stunnedEffectName = "Stunned";
+    private const string CounterSuccessFxName = "CounterSuccess";
     [SerializeField] private float sonarMinRadius = 0.5f;
     [SerializeField] private float sonarMaxRadius = 3;
     [SerializeField] private float sonarStayDuration = 0.5f;
@@ -97,9 +98,12 @@ public class Sonar : MonoBehaviour
         {
             if (otherPlayerObj != parent)
             {
-                Sonar enemySonar = otherPlayerObj.GetComponent<Sonar>();
-                if (enemySonar.IsSonarOpen)
+                Sonar enemySonar = otherPlayerObj.GetComponentInChildren<Sonar>();
+                if (enemySonar != null && enemySonar.IsSonarOpen)
                 {
+                    //TODO: Fix pos
+                    ParticleSystem effect = FxManager.Instance.GetEffect(CounterSuccessFxName);
+                    effect.gameObject.transform.position = parent.transform.position;
                     enemySonar.Reset();
                 }
             }
@@ -115,9 +119,6 @@ public class Sonar : MonoBehaviour
         if (!IsSonarOpen) return;
         if (other.gameObject.tag == ProjectConst.PlayerTag)
         {
-            //TODO: Fix effect
-            ParticleSystem effect = FxManager.Instance.GetEffect(stunnedEffectName);
-            effect.gameObject.transform.position = other.transform.position;
 
             if (Physics2D.Linecast(PlayerManager.Instance.Players[0].transform.position, PlayerManager.Instance.Players[1].transform.position, detectLayer))
             {
@@ -126,6 +127,9 @@ public class Sonar : MonoBehaviour
             }
             else
             {
+                //TODO: Fix pos
+                ParticleSystem effect = FxManager.Instance.GetEffect(stunnedEffectName);
+                effect.gameObject.transform.position = other.transform.position;
                 Debug.Log("Direct Collide player!!");
                 DomainEvents.Raise(new OnPlayerTrigger(SonarState.direct, parent));
             }
