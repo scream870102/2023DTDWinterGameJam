@@ -40,7 +40,19 @@ public class Sonar : MonoBehaviour
     public bool IsSonarOpen => isSonarOpen;
 
     private void Awake() {
-        //DomainEvents.Register<onPlayerAction>(onPlayerActionEvent);
+        DomainEvents.Register<OnPlayerAction>(onPlayerActionEvent);
+    }
+
+    private void onPlayerActionEvent(OnPlayerAction obj)
+    {
+        if(obj.ActionState == PlayerAction.detect && obj.player == this.gameObject)
+        {
+            Detect();
+        }
+        else if(obj.ActionState == PlayerAction.counter && obj.player == this.gameObject)
+        {
+            Counter();
+        }
     }
 
     private void Start()
@@ -49,28 +61,12 @@ public class Sonar : MonoBehaviour
     }
 
     private void OnDestroy() {
-        //DomainEvents.UnRegister<onPlayerAction>(onPlayerActionEvent);    
+        //DomainEvents.UnRegister<OnPlayerAction>(onPlayerActionEvent);    
     }
 
     // Update is called once per frame
     private void Update()
     {
-        // if(Input.GetKeyDown(KeyCode.K) && player == Player.player1)
-        // {
-        //     Detect();
-        // }
-        // if(Input.GetKeyDown(KeyCode.S) && player == Player.player2)
-        // {
-        //     Detect();
-        // }
-        // if(Input.GetKeyDown(KeyCode.L) && player == Player.player1)
-        // {
-        //     Counter();
-        // }
-        // if(Input.GetKeyDown(KeyCode.A) && player == Player.player2)
-        // {
-        //     Counter();
-        // }
     }
 
     private void OnPlayerTriggerEvent(OnPlayerTrigger param){ }
@@ -115,7 +111,7 @@ public class Sonar : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D other) {
         if(!isSonarOpen) return;
-        if(other.gameObject.tag == "playertest")
+        if(other.gameObject.tag == "Player")
         {
             
             if(Physics2D.Linecast(PlayerManager.Instance.Players[0].transform.position,PlayerManager.Instance.Players[1].transform.position))
