@@ -22,15 +22,25 @@ public class OnPlayerAction : IDomainEvent {
 }
 
 public class PlayerPerformance : MonoBehaviour {
+    public GameObject[] players;
 
+    struct TreasureOwner {
+        public GameObject Treasure;
+        public GameObject Owner;
+    };
+    TreasureOwner TreasureOwnerCheck;
+    
     private void Awake() {
         DomainEvents.Register<OnPlayerTrigger>(OnPlayerTriggerEvent);
     }
 
     // drop treasure timing
     private void OnPlayerTriggerEvent(OnPlayerTrigger param) {
-        if(param.State == Sonar.SonarState.direct) {
-            DropTreasure(param.Player.gameObject);
+        if(param.State != Sonar.SonarState.direct) {
+            return;
+        }
+        if(TreasureOwnerCheck.Owner == param.Player) {
+            DropTreasure(TreasureOwnerCheck.Treasure);
         }
     }
 
@@ -38,48 +48,29 @@ public class PlayerPerformance : MonoBehaviour {
         DomainEvents.UnRegister<OnPlayerTrigger>(OnPlayerTriggerEvent);
     }
 
-    private void Start() {
-        transform.GetComponent<Rigidbody2D>().isKinematic = true;
-    }
-
-    public GameObject[] players;
     public KeyCode[] DetectKeyCode, CounterKeyCode;
     private void Update() {
-
         // release sonar
-        if(Input.GetKey(DetectKeyCode[0])) {
-            OnPlayerAction eventParam = new OnPlayerAction();
-            eventParam.player = players[0];
-            eventParam.ActionState = PlayerAction.detect;
-            DomainEvents.Raise<OnPlayerAction>(eventParam);
+        for(int i = 0; i < players.Length; i ++) {
+            if(Input.GetKey(DetectKeyCode[i])) {
+                OnPlayerAction eventParam = new OnPlayerAction();
+                eventParam.player = players[i];
+                eventParam.ActionState = PlayerAction.detect;
+                DomainEvents.Raise<OnPlayerAction>(eventParam);
+            }
+            if(Input.GetKey(CounterKeyCode[i])) {
+                OnPlayerAction eventParam = new OnPlayerAction();
+                eventParam.player = players[i];
+                eventParam.ActionState = PlayerAction.counter;
+                DomainEvents.Raise<OnPlayerAction>(eventParam);
+            }
         }
-
-        if(Input.GetKey(CounterKeyCode[0])) {
-            OnPlayerAction eventParam = new OnPlayerAction();
-            eventParam.player = players[0];
-            eventParam.ActionState = PlayerAction.counter;
-            DomainEvents.Raise<OnPlayerAction>(eventParam);
-        }
-
-        if(Input.GetKey(DetectKeyCode[1])) {
-            OnPlayerAction eventParam = new OnPlayerAction();
-            eventParam.player = players[1];
-            eventParam.ActionState = PlayerAction.detect;
-            DomainEvents.Raise<OnPlayerAction>(eventParam);
-        }
-
-        if(Input.GetKey(CounterKeyCode[1])) {
-            OnPlayerAction eventParam = new OnPlayerAction();
-            eventParam.player = players[1];
-            eventParam.ActionState = PlayerAction.counter;
-            DomainEvents.Raise<OnPlayerAction>(eventParam);
-        }
+        
     }
 
-
     // pick treasure
-    public void OnTriggerEnter2D(Collider2D other) {
-        if (other.gameObject.tag == "Treasure") {
+    private void OnCollisionEnter2D(Collision2D other) {
+            if (other.gameObject.tag == "Treasure") {
             int count = 0;
             Transform parent = other.transform.parent;
             while (parent != null) {
@@ -88,6 +79,8 @@ public class PlayerPerformance : MonoBehaviour {
             }
             if (count <= 1) {
                 other.transform.SetParent(transform);
+                TreasureOwnerCheck.Owner = transform.gameObject;
+                TreasureOwnerCheck.Treasure = other.gameObject;
                 OnTreasuePick eventParam = new OnTreasuePick();
                 eventParam.Player = transform.gameObject;
                 DomainEvents.Raise<OnTreasuePick>(eventParam);
@@ -98,8 +91,7 @@ public class PlayerPerformance : MonoBehaviour {
 
     // drop treasure
     public void DropTreasure(GameObject Player) {
-        if (Player.transform.childCount == 0) return;
-        Transform treasure = Player.transform.GetChild(0);
+        Transform treasure = TreasureOwnerCheck.Treasure.transform;
         treasure.SetParent(null);
         OnTreasueDrop eventParam = new OnTreasueDrop();
         eventParam.Player = Player;

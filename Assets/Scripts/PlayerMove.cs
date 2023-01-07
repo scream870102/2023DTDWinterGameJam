@@ -16,14 +16,16 @@ public class PlayerMove : MonoBehaviour
         if(param.State == Sonar.SonarState.indirect || param.Player == transform.gameObject) {
             return;
         }
-        float StartTime = Time.time, PassedTime = 0;
-        while(PassedTime <= StunnedTime) {
-            StunnedCheck = true;
-            PassedTime = Time.time - StartTime;
-        }
-        StunnedCheck = false;
+        StunnedCheck = true;
+        StartCoroutine(OnStunnedEnd());
     }
 
+    private IEnumerator OnStunnedEnd()
+    {
+        yield return new WaitForSeconds(StunnedTime);
+        StunnedCheck = false;
+    }
+    
     private void OnDestroy() {
         DomainEvents.UnRegister<OnPlayerTrigger>(OnPlayerTriggerEvent);
     }
