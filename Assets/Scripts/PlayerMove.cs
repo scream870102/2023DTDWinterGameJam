@@ -5,37 +5,14 @@ using UnityEngine;
 
 public class PlayerMove : MonoBehaviour
 {
-    private void Awake() {
-        DomainEvents.Register<OnPlayerTrigger>(OnPlayerTriggerEvent);
-    }
-
-    // detect state
-    public float StunnedTime = 2f;
+    public float MoveSpeed, StunnedTime;
     private bool StunnedCheck = false;
-    private void OnPlayerTriggerEvent(OnPlayerTrigger param) {
-        if(param.State == Sonar.SonarState.indirect || param.Player == transform.gameObject) {
-            return;
-        }
-        StunnedCheck = true;
-        StartCoroutine(OnStunnedEnd());
-    }
-
-    private IEnumerator OnStunnedEnd()
-    {
-        yield return new WaitForSeconds(StunnedTime);
-        StunnedCheck = false;
-    }
-    
-    private void OnDestroy() {
-        DomainEvents.UnRegister<OnPlayerTrigger>(OnPlayerTriggerEvent);
-    }
-    
-    public float MoveSpeed;
-    void Start() {
-        MoveSpeed = 5f;
-    }
-
     public KeyCode upKeyCode, downKeyCode, leftKeyCode, rightKeyCode;
+
+    void Start() {
+        MoveSpeed = 5f; StunnedTime = 10f;
+    }
+
     void Update() {
         if(!StunnedCheck) {
             // detect direction
@@ -49,5 +26,27 @@ public class PlayerMove : MonoBehaviour
             Vector3 movement = new Vector3((left+right)*MoveSpeed*Time.deltaTime, (up+down)*MoveSpeed*Time.deltaTime, 0);
             transform.Translate(movement);
         }
+    }
+
+    // stunned by sonar
+    private void Awake() {
+        DomainEvents.Register<OnPlayerTrigger>(OnPlayerTriggerEvent);
+    }
+    
+    // ignore input and physics impacts
+    private void OnPlayerTriggerEvent(OnPlayerTrigger param) {
+        if (param.State == Sonar.SonarState.indirect) return;
+        if (param.Player == transform.gameObject) return;
+        transform.gameObject.GetComponent<Rigidbody2D>().isKinematic = true;
+        StunnedCheck = true;
+        StartCoroutine(OnStunnedEnd());
+    }
+    private IEnumerator OnStunnedEnd() {
+        yield return new WaitForSeconds(StunnedTime);
+        transform.gameObject.GetComponent<Rigidbody2D>().isKinematic = false;
+        StunnedCheck = false;
+    }
+    private void OnDestroy() {
+        DomainEvents.UnRegister<OnPlayerTrigger>(OnPlayerTriggerEvent);
     }
 }

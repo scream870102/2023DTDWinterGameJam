@@ -6,28 +6,29 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     [System.Serializable]
-    struct PointPair {
-        public Transform PointA;
-        public Transform PointB;
-        public Transform TreasurePoint;
+    struct Points {
+        public Transform[] Pos;
     }
-    [SerializeField] private List<PointPair> _spawnPoints = new List<PointPair>();
+    [SerializeField] private Points[] SpawnPoints;
     
+    public Transform treasure;
     void Start()
     {
-        // set the position of players
-        int pos = Random.Range(0, _spawnPoints.Count);
-        PlayerManager.Instance.Players[0].transform.position = _spawnPoints[pos].PointA.position;
-        PlayerManager.Instance.Players[1].transform.position = _spawnPoints[pos].PointB.position;
-
-
-        // set the position of treasure
-        for (int i = 0; i < transform.childCount; i++) {
-            string tag = transform.GetChild(i).gameObject.tag;
-            if (tag == "Treasure") {
-                transform.GetChild(i).gameObject.transform.position = _spawnPoints[pos].TreasurePoint.position;
-            }
+        // set the position of players in random
+        int PointId = Random.Range(0, SpawnPoints.Length);
+        int size = SpawnPoints[PointId].Pos.Length;
+        for(int i = 0; i < size; i ++) {
+            int id = Random.Range(0, SpawnPoints[PointId].Pos.Length);
+            Transform tmp = SpawnPoints[PointId].Pos[id];
+            SpawnPoints[PointId].Pos[id] = SpawnPoints[PointId].Pos[i];
+            SpawnPoints[PointId].Pos[i] = tmp;
         }
+
+        for(int i = 0; i < PlayerManager.Instance.Players.Length; i ++) {
+            PlayerManager.Instance.Players[i].transform.position = SpawnPoints[PointId].Pos[i].position;
+        }
+        // set the position of treasure in random
+        treasure.position = SpawnPoints[PointId].Pos[size - 1].position;
     }
 
 

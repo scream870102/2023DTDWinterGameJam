@@ -22,36 +22,19 @@ public class OnPlayerAction : IDomainEvent {
 }
 
 public class PlayerPerformance : MonoBehaviour {
-    public GameObject[] players;
-
-    struct TreasureOwner {
-        public GameObject Treasure;
-        public GameObject Owner;
-    };
-    TreasureOwner TreasureOwnerCheck;
-    
-    private void Awake() {
-        DomainEvents.Register<OnPlayerTrigger>(OnPlayerTriggerEvent);
-    }
-
-    // drop treasure timing
-    private void OnPlayerTriggerEvent(OnPlayerTrigger param) {
-        if(param.State != Sonar.SonarState.direct) {
-            return;
-        }
-        if(TreasureOwnerCheck.Owner == param.Player) {
-            DropTreasure(TreasureOwnerCheck.Treasure);
-        }
-    }
-
-    private void OnDestroy() {
-        DomainEvents.UnRegister<OnPlayerTrigger>(OnPlayerTriggerEvent);
-    }
 
     public KeyCode[] DetectKeyCode, CounterKeyCode;
+    public GameObject[] players;
+    public GameObject Treasure, GameManager;
+    public int TreasureOwner = -1;
+    private bool Active = true;
+
+    private void Start() {
+        TreasureOwner = -1;
+    }
     private void Update() {
         // release sonar
-        for(int i = 0; i < players.Length; i ++) {
+        for(int i = 0; i < players.Length && Active; i ++) {
             if(Input.GetKey(DetectKeyCode[i])) {
                 OnPlayerAction eventParam = new OnPlayerAction();
                 eventParam.player = players[i];
@@ -70,17 +53,14 @@ public class PlayerPerformance : MonoBehaviour {
 
     // pick treasure
     private void OnCollisionEnter2D(Collision2D other) {
-            if (other.gameObject.tag == "Treasure") {
-            int count = 0;
-            Transform parent = other.transform.parent;
-            while (parent != null) {
-                count++;
-                parent = parent.parent;
-            }
-            if (count <= 1) {
-                other.transform.SetParent(transform);
-                TreasureOwnerCheck.Owner = transform.gameObject;
-                TreasureOwnerCheck.Treasure = other.gameObject;
+        if (other.gameObject == Treasure) {
+            if (Treasure.transform.parent == GameManager.transform) {
+                Treasure.transform.SetParent(transform);
+                for(int i = 0; i < players.Length; i ++) {
+                    if(players[i] == transform.gameObject) {
+                        TreasureOwner = i; break;
+                    }
+                }
                 OnTreasuePick eventParam = new OnTreasuePick();
                 eventParam.Player = transform.gameObject;
                 DomainEvents.Raise<OnTreasuePick>(eventParam);
@@ -91,10 +71,31 @@ public class PlayerPerformance : MonoBehaviour {
 
     // drop treasure
     public void DropTreasure(GameObject Player) {
-        Transform treasure = TreasureOwnerCheck.Treasure.transform;
-        treasure.SetParent(null);
-        OnTreasueDrop eventParam = new OnTreasueDrop();
-        eventParam.Player = Player;
-        DomainEvents.Raise<OnTreasueDrop>(eventParam);
+        Treasure.transform.SetParent(GameManager.transform);
+        TreasureOwner = -1;
+    }
+
+    // hitten by sonar
+    private void Awake() {
+        DomainEvents.Register<OnPlayerTrigger>(OnPlayerTriggerEvent);
+    }
+    // to drop treasure
+    private void OnPlayerTriggerEvent(OnPlayerTrigger param) {
+        if(param.State != Sonar.SonarState.direct) return;
+        for(int i = 0; i < players.Length; i ++) {
+            if (players[i] != param.Player && TreasureOwner == i) {
+                DropTreasure(players[i]); break;
+            }
+        }
+        Active = false;
+        StartCoroutine(OnStunnedEnd());
+    }
+    private IEnumerator OnStunnedEnd() {
+        float StunnedTime = transform.gameObject.GetComponent<PlayerMove>().StunnedTime;
+        yield return new WaitForSeconds(StunnedTime);
+        Active = true;
+    }
+    private void OnDestroy() {
+        DomainEvents.UnRegister<OnPlayerTrigger>(OnPlayerTriggerEvent);
     }
 }
