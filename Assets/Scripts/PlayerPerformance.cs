@@ -23,52 +23,54 @@ public class OnPlayerAction : IDomainEvent {
 
 public class PlayerPerformance : MonoBehaviour {
 
-    // private void Awake() {
-    //     DomainEvents.Register<OnPlayerTrigger>(OnPlayerTriggerEvent);
-    // }
+    private void Awake() {
+        DomainEvents.Register<OnPlayerTrigger>(OnPlayerTriggerEvent);
+    }
 
     // drop treasure timing
-    // private void OnPlayerTriggerEvent(OnPlayerTrigger param) {
-    //     if(param.SonarState == 0) {
-    //         DropTreasure(param.player.gameObject);
-    //     }
-    // }
+    private void OnPlayerTriggerEvent(OnPlayerTrigger param) {
+        if(param.State == Sonar.SonarState.direct) {
+            DropTreasure(param.Player.gameObject);
+        }
+    }
 
-    // private void OnDestroy() {
-    //     DomainEvents.UnRegiste<OnPlayerTrigger>(OnPlayerTriggerEvent);
-    // }
+    private void OnDestroy() {
+        DomainEvents.UnRegister<OnPlayerTrigger>(OnPlayerTriggerEvent);
+    }
 
     private void Start() {
         transform.GetComponent<Rigidbody2D>().isKinematic = true;
     }
 
+    public GameObject[] players;
+    public KeyCode[] DetectKeyCode, CounterKeyCode;
     private void Update() {
 
         // release sonar
-        if(Input.GetKey("e") && transform.gameObject.tag == "Player1") {
+        if(Input.GetKey(DetectKeyCode[0])) {
             OnPlayerAction eventParam = new OnPlayerAction();
-            eventParam.player = transform.gameObject;
+            eventParam.player = players[0];
             eventParam.ActionState = PlayerAction.detect;
             DomainEvents.Raise<OnPlayerAction>(eventParam);
         }
 
-        if(Input.GetKey("r") && transform.gameObject.tag == "Player1") {
+        if(Input.GetKey(CounterKeyCode[0])) {
             OnPlayerAction eventParam = new OnPlayerAction();
-            eventParam.player = transform.gameObject;
+            eventParam.player = players[0];
             eventParam.ActionState = PlayerAction.counter;
             DomainEvents.Raise<OnPlayerAction>(eventParam);
         }
 
-        if(Input.GetKey("o") && transform.gameObject.tag == "Player2") {
+        if(Input.GetKey(DetectKeyCode[1])) {
             OnPlayerAction eventParam = new OnPlayerAction();
-            eventParam.player = transform.gameObject;
+            eventParam.player = players[1];
             eventParam.ActionState = PlayerAction.detect;
             DomainEvents.Raise<OnPlayerAction>(eventParam);
         }
 
-        if(Input.GetKey("p") && transform.gameObject.tag == "Player2") {
+        if(Input.GetKey(CounterKeyCode[1])) {
             OnPlayerAction eventParam = new OnPlayerAction();
-            eventParam.player = transform.gameObject;
+            eventParam.player = players[1];
             eventParam.ActionState = PlayerAction.counter;
             DomainEvents.Raise<OnPlayerAction>(eventParam);
         }
