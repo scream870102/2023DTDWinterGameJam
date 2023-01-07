@@ -40,8 +40,8 @@ public class Player2Move : MonoBehaviour
             // detect direction
             float up, down, left, right;
             up    = Input.GetKey("i") ? +1f : 0f;
-            down  = Input.GetKey("j") ? -1f : 0f;
-            left  = Input.GetKey("k") ? -1f : 0f;
+            down  = Input.GetKey("k") ? -1f : 0f;
+            left  = Input.GetKey("j") ? -1f : 0f;
             right = Input.GetKey("l") ? +1f : 0f;
 
             // movement
