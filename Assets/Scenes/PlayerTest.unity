@@ -454,10 +454,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8948a2dd1bda20a4fb285bc5e847817f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _spawnPoints:
-  - PointA: {fileID: 1848865446}
-    PointB: {fileID: 772835336}
-    TreasurePoint: {fileID: 851216643}
+  SpawnPoints: []
+  treasure: {fileID: 0}
 --- !u!4 &939896334
 Transform:
   m_ObjectHideFlags: 0
