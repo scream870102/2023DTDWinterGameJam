@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 6190388256973611607}
   - component: {fileID: 6190388256973611600}
   - component: {fileID: 6190388256973611601}
-  - component: {fileID: 6190388256973611603}
   - component: {fileID: 6190388256973611612}
+  - component: {fileID: 2761628006688418133}
   m_Layer: 2
   m_Name: Player
   m_TagString: Player
@@ -138,29 +138,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ac46821a91a0d34cb04de6cd519df32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DetectKeyCode: 650000006f000000
+  CounterKeyCode: 7200000070000000
   players:
   - {fileID: 6190388256973611594}
   - {fileID: 0}
-  DetectKeyCode: 650000006f000000
-  CounterKeyCode: 7200000070000000
---- !u!114 &6190388256973611603
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6190388256973611594}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0f2797b74ab61d14188558d6b8e798d7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sonarPrefab: {fileID: 2779061361661021191, guid: fcf8d2965f374bd4cafe35544863812d, type: 3}
-  sonarMinRadius: 0.5
-  sonarMaxRadius: 3
-  sonarDetectSpeed: 0.1
-  sonarStayDuration: 0.5
-  sonarMaskDetectSpeed: 0.5
+  Treasure: {fileID: 0}
+  GameManager: {fileID: 0}
+  TreasureOwner: -1
 --- !u!114 &6190388256973611612
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -173,9 +158,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6c612b8bc7abb842910089f417638e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StunnedTime: 2
   MoveSpeed: 0
+  StunnedTime: 2
   upKeyCode: 119
   downKeyCode: 115
   leftKeyCode: 97
   rightKeyCode: 100
+--- !u!114 &2761628006688418133
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6190388256973611594}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f25579eeb7c1f8a4d94d9aa833e3e8fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _sonarPreafb: {fileID: 6276262002949979867, guid: fcf8d2965f374bd4cafe35544863812d, type: 3}
