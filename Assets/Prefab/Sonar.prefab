@@ -152,7 +152,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sonarMinRadius: 0.5
-  sonarMaxRadius: 3
+  sonarMaxRadius: 5
   sonarStayDuration: 0.5
   sonarMaskDetectSpeed: 10
   detectLayer:

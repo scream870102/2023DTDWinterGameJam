@@ -6,6 +6,7 @@ using Scream.UniMO.Common;
 using System;
 using BIGJ2023.GameSystem;
 using Scream.UniMO.Utils;
+using BIGJ2023.Common;
 
 public class OnPlayerTrigger : IDomainEvent
 {
@@ -33,6 +34,8 @@ public class Sonar : MonoBehaviour
         direct,
         indirect
     }
+
+    private const string stunnedEffectName = "Stunned";
     [SerializeField] private float sonarMinRadius = 0.5f;
     [SerializeField] private float sonarMaxRadius = 3;
     [SerializeField] private float sonarStayDuration = 0.5f;
@@ -112,6 +115,9 @@ public class Sonar : MonoBehaviour
         if (!IsSonarOpen) return;
         if (other.gameObject.tag == ProjectConst.PlayerTag)
         {
+            //TODO: Fix effect
+            ParticleSystem effect = FxManager.Instance.GetEffect(stunnedEffectName);
+            effect.gameObject.transform.position = other.transform.position;
 
             if (Physics2D.Linecast(PlayerManager.Instance.Players[0].transform.position, PlayerManager.Instance.Players[1].transform.position, detectLayer))
             {
@@ -159,10 +165,8 @@ public class Sonar : MonoBehaviour
     IEnumerator SonarSpread()
     {
         SetSonarOpen(true);
-        //while (sonarCollider.radius < sonarMaxRadius)
         while (sonar.transform.localScale.x < sonarMaxRadius)
         {
-            //sonarCollider.radius += sonarDetectSpeed * Time.deltaTime;
             sonar.transform.localScale += new Vector3(sonarMaskDetectSpeed * Time.deltaTime, sonarMaskDetectSpeed * Time.deltaTime, 1);
             yield return new WaitForSeconds(Time.deltaTime);
         }
