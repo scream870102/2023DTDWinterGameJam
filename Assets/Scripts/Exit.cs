@@ -41,10 +41,10 @@ public class Exit : MonoBehaviour
         DelayDo(3.5f, () => { 
             other.gameObject.GetComponent<Animator>().SetBool("Yeahh", false);
             other.gameObject.GetComponent<PlayerMove>().StunnedCheck = false;
+            OnWinnerDetermine eventParam = new OnWinnerDetermine();
+            eventParam.Winner = other.gameObject;
+            DomainEvents.Raise<OnWinnerDetermine>(eventParam);
         });
-        OnWinnerDetermine eventParam = new OnWinnerDetermine();
-        eventParam.Winner = other.gameObject;
-        DomainEvents.Raise<OnWinnerDetermine>(eventParam);
         
 
     }

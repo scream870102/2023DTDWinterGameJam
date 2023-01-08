@@ -47,7 +47,7 @@ public class PlayerPerformance : MonoBehaviour
     private void Update()
     {
         // release sonar
-        if(!canUseSonar) return;
+        if (!canUseSonar) return;
         bool check = false;
         if (Active && Input.GetKeyDown(DetectKeyCode))
         {
@@ -65,10 +65,12 @@ public class PlayerPerformance : MonoBehaviour
             DomainEvents.Raise<OnPlayerAction>(eventParam);
             check = true;
         }
-        if (check) {
+        if (check)
+        {
             gameObject.GetComponent<Animator>().SetBool("Release", true);
             gameObject.GetComponent<PlayerMove>().StunnedCheck = true;
-            DelayDo(1.5f, () => { 
+            DelayDo(1.5f, () =>
+            {
                 gameObject.GetComponent<Animator>().SetBool("Release", false);
                 gameObject.GetComponent<PlayerMove>().StunnedCheck = false;
             });
@@ -83,8 +85,10 @@ public class PlayerPerformance : MonoBehaviour
             if (Treasure.transform.parent == GameManager.transform)
             {
                 Treasure.transform.SetParent(transform);
-                for (int i = 0; i < players.Length; i++) {
-                    if (players[i] == transform.gameObject) {
+                for (int i = 0; i < players.Length; i++)
+                {
+                    if (players[i] == transform.gameObject)
+                    {
                         TreasureOwner = i; break;
                     }
                 }
@@ -95,9 +99,13 @@ public class PlayerPerformance : MonoBehaviour
                 Debug.Log("Pick");
                 gameObject.GetComponent<Animator>().SetBool("Yeahh", true);
                 gameObject.GetComponent<PlayerMove>().StunnedCheck = true;
-                DelayDo(1f, () => { 
-                    gameObject.GetComponent<Animator>().SetBool("Yeahh", false);
-                    gameObject.GetComponent<PlayerMove>().StunnedCheck = false;
+                DelayDo(1f, () =>
+                {
+                    if (gameObject != null)
+                    {
+                        gameObject.GetComponent<Animator>().SetBool("Yeahh", false);
+                        gameObject.GetComponent<PlayerMove>().StunnedCheck = false;
+                    }
                 });
             }
         }
@@ -120,7 +128,7 @@ public class PlayerPerformance : MonoBehaviour
 
     private void OnCDTriggerEvent(OnCDTrigger param)
     {
-        if(param.Player == gameObject)
+        if (param.Player == gameObject)
         {
             canUseSonar = !param.IsCD;
             Debug.Log("can use sonar:" + param.IsCD);
@@ -134,7 +142,7 @@ public class PlayerPerformance : MonoBehaviour
         {
             if (players[i] != param.Player && TreasureOwner == i)
             {
-                DropTreasure(players[i]); 
+                DropTreasure(players[i]);
                 Debug.Log("Drop");
                 FxManager.Instance.PlayAudio(DropTreasureAudioName);
                 break;
