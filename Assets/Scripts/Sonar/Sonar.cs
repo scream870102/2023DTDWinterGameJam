@@ -35,8 +35,12 @@ public class Sonar : MonoBehaviour
         indirect
     }
 
-    private const string stunnedEffectName = "Stunned";
+    private const string stunnedEffectName = "StunnedStart";
+    private const string stunnedAudioName = "Stunned";
     private const string CounterSuccessFxName = "CounterSuccess";
+    private const string CounterSuccessAudioName = "CounterSuccess";
+    private const string CounterFailedAudioName = "CounterFailed";
+    private const string SonarReleaseAudioName = "SonarRelease";
     [SerializeField] private float sonarMinRadius = 0.5f;
     [SerializeField] private float sonarMaxRadius = 3;
     [SerializeField] private float sonarStayDuration = 0.5f;
@@ -87,6 +91,7 @@ public class Sonar : MonoBehaviour
         if (sonarCollider == null) return;
         if (IsSonarOpen) return;
         //TODO: -1cd
+        FxManager.Instance.PlayAudio(SonarReleaseAudioName);
         playingSonar = MonoHelper.Instance.StartCoroutine(SonarSpread());
     }
 
@@ -128,8 +133,10 @@ public class Sonar : MonoBehaviour
             else
             {
                 //TODO: Fix pos
+                
                 ParticleSystem effect = FxManager.Instance.GetEffect(stunnedEffectName);
                 effect.gameObject.transform.position = other.transform.position;
+                FxManager.Instance.PlayAudio(stunnedAudioName);
                 Debug.Log("Direct Collide player!!");
                 DomainEvents.Raise(new OnPlayerTrigger(SonarState.direct, parent));
             }

@@ -40,6 +40,18 @@ namespace BIGJ2023.Common
         {
             LeanPool.Despawn(toRecycle);
         }
+
+        public void PlayAudio(string fxName)
+        {
+            var collection = database.GetAudioCollection();
+            if(collection.ContainsKey(fxName))
+            {
+                var player = LeanPool.Spawn(database.GetAudioPlayerPrefab()).GetComponent<AudioSource>();
+                player.PlayOneShot(collection[fxName]);
+                return;
+            }
+            Debug.Log("missing audio " + fxName);
+        }
     }
 
 }
