@@ -30,6 +30,7 @@ namespace BIGJ2023.Common
         private void Start()
         {
             var audiogo = Instantiate(audioPlayerPrefab);
+            audiogo.transform.SetParent(transform);
             audioPlayer = audiogo.GetComponent<AudioSource>();
         }
 
