@@ -13,6 +13,7 @@ public class PlayerMove : MonoBehaviour
 
     void Start() {
         StunnedTime = 4f;
+        MoveSpeed = 10f;
     }
 
     void Update() {
