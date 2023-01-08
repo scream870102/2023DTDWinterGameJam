@@ -120,10 +120,9 @@ public class Sonar : MonoBehaviour
         //TODO: -2(?)xcd
     }
 
-    private bool IsHitten = false;
+    private Dictionary<GameObject, bool> HitState = new Dictionary<GameObject, bool>();
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (IsHitten) return;
         if (!IsSonarOpen) return;
         if (other.gameObject.tag == ProjectConst.PlayerTag)
         {
@@ -135,15 +134,20 @@ public class Sonar : MonoBehaviour
             }
             else
             {
-                //TODO: Fix pos
                 
+                if (HitState.ContainsKey(other.gameObject)) {
+                    if(HitState[other.gameObject]) return;
+                } else {
+                    HitState.Add(other.gameObject, true);
+                }
+
+                //TODO: Fix pos
                 ParticleSystem effect = FxManager.Instance.GetEffect(stunnedEffectName);
                 effect.gameObject.transform.position = other.transform.position;
                 FxManager.Instance.PlayAudio(stunnedAudioName);
                 Debug.Log("Direct Collide player!!");
                 DomainEvents.Raise(new OnPlayerTrigger(SonarState.direct, parent));
-                IsHitten = true;
-                StartCoroutine(OnStunnedEnd(other.gameObject));
+                MonoHelper.Instance.StartCoroutine(OnStunnedEnd(other.gameObject));
             }
         }
     }
@@ -151,7 +155,7 @@ public class Sonar : MonoBehaviour
     private IEnumerator OnStunnedEnd(GameObject other) {
         float StunnedTime = other.GetComponent<PlayerMove>().StunnedTime;
         yield return new WaitForSeconds(StunnedTime);
-        IsHitten = false;
+        HitState[other] = false;
     }
 
     private void OnTriggerStay2D(Collider2D other)
