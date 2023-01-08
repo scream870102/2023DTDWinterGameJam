@@ -27,7 +27,8 @@ namespace BIGJ2023.Common
             }
         }
         #endregion Instance
-        private void Start() {
+        private void Start()
+        {
             var audiogo = Instantiate(audioPlayerPrefab);
             audioPlayer = audiogo.GetComponent<AudioSource>();
         }
@@ -51,7 +52,7 @@ namespace BIGJ2023.Common
         public void PlayAudio(string fxName)
         {
             var collection = database.GetAudioCollection();
-            if(collection.ContainsKey(fxName))
+            if (collection.ContainsKey(fxName))
             {
                 //var player = LeanPool.Spawn(database.GetAudioPlayerPrefab()).GetComponent<AudioSource>();
                 //udioPlayer.clip = collection[fxName]
