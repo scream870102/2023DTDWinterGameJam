@@ -159,7 +159,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6c612b8bc7abb842910089f417638e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MoveSpeed: 5
+  MoveSpeed: 3
   StunnedTime: 4
   StunnedCheck: 0
   upKeyCode: 119

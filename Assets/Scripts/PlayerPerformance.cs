@@ -39,10 +39,14 @@ public class PlayerPerformance : MonoBehaviour
     public int TreasureOwner = -1;
     private bool Active = true;
     private bool canUseSonar = true;
+    private SpriteRenderer treasureSprite;
 
     private void Start()
     {
         TreasureOwner = -1;
+        treasureSprite = Treasure.GetComponent<SpriteRenderer>();
+        treasureSprite.sortingOrder = 1;
+
     }
     private void Update()
     {
@@ -85,6 +89,7 @@ public class PlayerPerformance : MonoBehaviour
             if (Treasure.transform.parent == GameManager.transform)
             {
                 Treasure.transform.SetParent(transform);
+                treasureSprite.sortingOrder = 4;
                 for (int i = 0; i < players.Length; i++)
                 {
                     if (players[i] == transform.gameObject)
@@ -117,6 +122,7 @@ public class PlayerPerformance : MonoBehaviour
     {
         Treasure.transform.SetParent(GameManager.transform);
         TreasureOwner = -1;
+        treasureSprite.sortingOrder = 1;
     }
 
     // hitten by sonar
