@@ -154,7 +154,8 @@ MonoBehaviour:
   sonarMinRadius: 0.5
   sonarMaxRadius: 5
   sonarStayDuration: 0.5
-  sonarMaskDetectSpeed: 10
+  sonarDetectSpeed: 10
+  sonarCounterSpeed: 30
   detectLayer:
     serializedVersion: 2
     m_Bits: 64
