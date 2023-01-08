@@ -42,7 +42,7 @@ ParticleSystem:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8809054773803636706}
   serializedVersion: 8
-  lengthInSec: 0.5
+  lengthInSec: 0.3
   simulationSpeed: 1
   stopAction: 3
   cullingMode: 0
@@ -224,7 +224,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 0.23092759, g: 1, b: 0, a: 1}
+      maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -662,7 +662,7 @@ ParticleSystem:
   ShapeModule:
     serializedVersion: 6
     enabled: 1
-    type: 4
+    type: 0
     angle: 25
     length: 5
     boxThickness: {x: 0, y: 0, z: 0}
@@ -868,7 +868,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 10
+      scalar: 15
       minScalar: 10
       maxCurve:
         serializedVersion: 2
@@ -1364,10 +1364,10 @@ ParticleSystem:
         m_NumAlphaKeys: 2
   UVModule:
     serializedVersion: 2
-    enabled: 0
-    mode: 0
-    timeMode: 0
-    fps: 30
+    enabled: 1
+    mode: 1
+    timeMode: 2
+    fps: 15
     frameOverTime:
       serializedVersion: 2
       minMaxState: 1
@@ -1483,7 +1483,20 @@ ParticleSystem:
     uvChannelMask: -1
     rowMode: 1
     sprites:
-    - sprite: {fileID: 0}
+    - sprite: {fileID: 1904718120, guid: 100969a01d088af42be2162881a289d7, type: 3}
+    - sprite: {fileID: -1231257646, guid: 100969a01d088af42be2162881a289d7, type: 3}
+    - sprite: {fileID: 1594688258, guid: 100969a01d088af42be2162881a289d7, type: 3}
+    - sprite: {fileID: -1382002044, guid: 100969a01d088af42be2162881a289d7, type: 3}
+    - sprite: {fileID: -1958892232, guid: 100969a01d088af42be2162881a289d7, type: 3}
+    - sprite: {fileID: -1006534432, guid: 100969a01d088af42be2162881a289d7, type: 3}
+    - sprite: {fileID: -1607940367, guid: 100969a01d088af42be2162881a289d7, type: 3}
+    - sprite: {fileID: -257427186, guid: 100969a01d088af42be2162881a289d7, type: 3}
+    - sprite: {fileID: 2065524108, guid: 100969a01d088af42be2162881a289d7, type: 3}
+    - sprite: {fileID: 1880901432, guid: 100969a01d088af42be2162881a289d7, type: 3}
+    - sprite: {fileID: -731404644, guid: 100969a01d088af42be2162881a289d7, type: 3}
+    - sprite: {fileID: -739293588, guid: 100969a01d088af42be2162881a289d7, type: 3}
+    - sprite: {fileID: -104944477, guid: 100969a01d088af42be2162881a289d7, type: 3}
+    - sprite: {fileID: 1248396332, guid: 100969a01d088af42be2162881a289d7, type: 3}
     flipU: 0
     flipV: 0
   VelocityModule:
