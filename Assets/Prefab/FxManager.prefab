@@ -45,3 +45,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   database: {fileID: 11400000, guid: e5e185c0d7bf79345a50fe2d3dabf682, type: 2}
+  audioPlayerPrefab: {fileID: 3779444205231383247, guid: b7ab400f205baa640b75ea0635a678af, type: 3}
