@@ -141,5 +141,6 @@ public class PlayerPerformance : MonoBehaviour
     private void OnDestroy()
     {
         DomainEvents.UnRegister<OnPlayerTrigger>(OnPlayerTriggerEvent);
+        DomainEvents.UnRegister<OnCDTrigger>(OnCDTriggerEvent);
     }
 }
