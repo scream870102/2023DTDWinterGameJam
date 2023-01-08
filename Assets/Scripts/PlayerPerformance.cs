@@ -1,9 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using BIGJ2023.Common;
 using Scream.UniMO.Common;
 using UnityEngine;
 using Logger = Scream.UniMO.Common.Logger;
+using Scream.UniMO.Utils;
 
 // generate TreasuePick event
 public class OnTreasuePick : IDomainEvent
@@ -46,12 +48,14 @@ public class PlayerPerformance : MonoBehaviour
     {
         // release sonar
         if(!canUseSonar) return;
+        bool check = false;
         if (Active && Input.GetKeyDown(DetectKeyCode))
         {
             OnPlayerAction eventParam = new OnPlayerAction();
             eventParam.player = gameObject;
             eventParam.ActionState = PlayerAction.detect;
             DomainEvents.Raise<OnPlayerAction>(eventParam);
+            check = true;
         }
         if (Active && Input.GetKeyDown(CounterKeyCode))
         {
@@ -59,6 +63,15 @@ public class PlayerPerformance : MonoBehaviour
             eventParam.player = gameObject;
             eventParam.ActionState = PlayerAction.counter;
             DomainEvents.Raise<OnPlayerAction>(eventParam);
+            check = true;
+        }
+        if (check) {
+            gameObject.GetComponent<Animator>().SetBool("Release", true);
+            gameObject.GetComponent<PlayerMove>().StunnedCheck = true;
+            DelayDo(1.5f, () => { 
+                gameObject.GetComponent<Animator>().SetBool("Release", false);
+                gameObject.GetComponent<PlayerMove>().StunnedCheck = false;
+            });
         }
     }
 
@@ -70,19 +83,22 @@ public class PlayerPerformance : MonoBehaviour
             if (Treasure.transform.parent == GameManager.transform)
             {
                 Treasure.transform.SetParent(transform);
-                for (int i = 0; i < players.Length; i++)
-                {
-                    if (players[i] == transform.gameObject)
-                    {
+                for (int i = 0; i < players.Length; i++) {
+                    if (players[i] == transform.gameObject) {
                         TreasureOwner = i; break;
                     }
                 }
                 OnTreasuePick eventParam = new OnTreasuePick();
                 eventParam.Player = transform.gameObject;
-                Debug.Log("Pick");
-
                 DomainEvents.Raise<OnTreasuePick>(eventParam);
                 FxManager.Instance.PlayAudio(GetTreasureAudioName);
+                Debug.Log("Pick");
+                gameObject.GetComponent<Animator>().SetBool("Yeahh", true);
+                gameObject.GetComponent<PlayerMove>().StunnedCheck = true;
+                DelayDo(1.5f, () => { 
+                    gameObject.GetComponent<Animator>().SetBool("Yeahh", false);
+                    gameObject.GetComponent<PlayerMove>().StunnedCheck = false;
+                });
             }
         }
     }
@@ -150,5 +166,16 @@ public class PlayerPerformance : MonoBehaviour
     {
         DomainEvents.UnRegister<OnPlayerTrigger>(OnPlayerTriggerEvent);
         DomainEvents.UnRegister<OnCDTrigger>(OnCDTriggerEvent);
+    }
+
+    private void DelayDo(float delay, Action action)
+    {
+        MonoHelper.Instance.StartCoroutine(DelayDoImpl(delay, action));
+    }
+
+    private IEnumerator DelayDoImpl(float delay, Action action)
+    {
+        yield return new WaitForSeconds(delay);
+        action?.Invoke();
     }
 }
