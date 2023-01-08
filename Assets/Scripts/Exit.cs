@@ -30,6 +30,7 @@ public class Exit : MonoBehaviour
             return;
         }
         Debug.Log(other.name + "wins!!");
+        Time.timeScale = 0f;
         OnWinnerDetermine eventParam = new OnWinnerDetermine();
         eventParam.Winner = other.gameObject;
         DomainEvents.Raise<OnWinnerDetermine>(eventParam);
