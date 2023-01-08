@@ -10,7 +10,7 @@ public class PlayerMove : MonoBehaviour
     public KeyCode upKeyCode, downKeyCode, leftKeyCode, rightKeyCode;
 
     void Start() {
-        MoveSpeed = 5f; StunnedTime = 10f;
+        
     }
 
     void Update() {
