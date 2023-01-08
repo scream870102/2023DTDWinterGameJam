@@ -29,6 +29,8 @@ public class OnPlayerAction : IDomainEvent
 public class PlayerPerformance : MonoBehaviour
 {
     private const string stunnedEndEffectName = "Healed";
+    private const string GetTreasureAudioName = "GetTreasure";
+    private const string DropTreasureAudioName = "DropTreasure";
     public KeyCode DetectKeyCode, CounterKeyCode;
     public GameObject[] players;
     public GameObject Treasure, GameManager;
@@ -77,7 +79,10 @@ public class PlayerPerformance : MonoBehaviour
                 }
                 OnTreasuePick eventParam = new OnTreasuePick();
                 eventParam.Player = transform.gameObject;
+                Debug.Log("Pick");
+
                 DomainEvents.Raise<OnTreasuePick>(eventParam);
+                FxManager.Instance.PlayAudio(GetTreasureAudioName);
             }
         }
     }
@@ -113,7 +118,10 @@ public class PlayerPerformance : MonoBehaviour
         {
             if (players[i] != param.Player && TreasureOwner == i)
             {
-                DropTreasure(players[i]); break;
+                DropTreasure(players[i]); 
+                Debug.Log("Drop");
+                FxManager.Instance.PlayAudio(DropTreasureAudioName);
+                break;
             }
         }
         if (IsSamePlayer(param))
