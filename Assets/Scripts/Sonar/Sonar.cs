@@ -135,11 +135,13 @@ public class Sonar : MonoBehaviour
             else
             {
                 
+                
                 if (HitState.ContainsKey(other.gameObject)) {
                     if(HitState[other.gameObject]) return;
                 } else {
                     HitState.Add(other.gameObject, true);
                 }
+                HitState[other.gameObject] = true;
 
                 //TODO: Fix pos
                 ParticleSystem effect = FxManager.Instance.GetEffect(stunnedEffectName);
