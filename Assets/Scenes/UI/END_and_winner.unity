@@ -550,8 +550,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   winnerSprites:
-  - {fileID: 21300000, guid: e92fc44f12c21dd44a49e390f39f7ffd, type: 3}
-  - {fileID: 21300000, guid: dcea51d6065d64246aeec467afeff684, type: 3}
+  - {fileID: 21300000, guid: df304f995ec940b4ab2db24d0c0ba072, type: 3}
+  - {fileID: 21300000, guid: c8a12248331bc35428239da8de3419fe, type: 3}
   winnerComment:
   - P1
   - P2
