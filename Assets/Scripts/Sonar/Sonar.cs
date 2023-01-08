@@ -119,8 +119,11 @@ public class Sonar : MonoBehaviour
         }
         //TODO: -2(?)xcd
     }
+
+    private bool IsHitten = false;
     private void OnTriggerEnter2D(Collider2D other)
     {
+        if (IsHitten) return;
         if (!IsSonarOpen) return;
         if (other.gameObject.tag == ProjectConst.PlayerTag)
         {
@@ -139,8 +142,16 @@ public class Sonar : MonoBehaviour
                 FxManager.Instance.PlayAudio(stunnedAudioName);
                 Debug.Log("Direct Collide player!!");
                 DomainEvents.Raise(new OnPlayerTrigger(SonarState.direct, parent));
+                IsHitten = true;
+                StartCoroutine(OnStunnedEnd(other.gameObject));
             }
         }
+    }
+
+    private IEnumerator OnStunnedEnd(GameObject other) {
+        float StunnedTime = other.GetComponent<PlayerMove>().StunnedTime;
+        yield return new WaitForSeconds(StunnedTime);
+        IsHitten = false;
     }
 
     private void OnTriggerStay2D(Collider2D other)
