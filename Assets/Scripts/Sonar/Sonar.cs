@@ -42,9 +42,10 @@ public class Sonar : MonoBehaviour
     private const string CounterFailedAudioName = "CounterFailed";
     private const string SonarReleaseAudioName = "SonarRelease";
     [SerializeField] private float sonarMinRadius = 0.5f;
-    [SerializeField] private float sonarMaxRadius = 3;
+    [SerializeField] private float sonarMaxRadius = 5;
     [SerializeField] private float sonarStayDuration = 0.5f;
-    [SerializeField] private float sonarMaskDetectSpeed = 0.5f;
+    [SerializeField] private float sonarDetectSpeed = 10f;
+    [SerializeField] private float sonarCounterSpeed = 20f;
     [SerializeField] private LayerMask detectLayer;
 
     private GameObject sonar;
@@ -90,14 +91,17 @@ public class Sonar : MonoBehaviour
     {
         if (sonarCollider == null) return;
         if (IsSonarOpen) return;
-        //TODO: -1cd
         FxManager.Instance.PlayAudio(SonarReleaseAudioName);
-        playingSonar = MonoHelper.Instance.StartCoroutine(SonarSpread());
+        playingSonar = MonoHelper.Instance.StartCoroutine(SonarSpread(sonarDetectSpeed));
     }
 
     private void Counter()
     {
         Debug.Log("Try counter");
+        if (sonarCollider == null) return;
+        if (IsSonarOpen) return;
+        FxManager.Instance.PlayAudio(SonarReleaseAudioName);
+        playingSonar = MonoHelper.Instance.StartCoroutine(SonarSpread(sonarCounterSpeed));
 
         foreach (GameObject otherPlayerObj in PlayerManager.Instance.Players)
         {
@@ -190,12 +194,12 @@ public class Sonar : MonoBehaviour
         sonar.transform.localScale = Vector3.one;
     }
 
-    IEnumerator SonarSpread()
+    IEnumerator SonarSpread(float speed)
     {
         SetSonarOpen(true);
         while (sonar.transform.localScale.x < sonarMaxRadius)
         {
-            sonar.transform.localScale += new Vector3(sonarMaskDetectSpeed * Time.deltaTime, sonarMaskDetectSpeed * Time.deltaTime, 1);
+            sonar.transform.localScale += new Vector3(speed * Time.deltaTime, speed * Time.deltaTime, 1);
             yield return new WaitForSeconds(Time.deltaTime);
         }
         yield return new WaitForSeconds(sonarStayDuration);
