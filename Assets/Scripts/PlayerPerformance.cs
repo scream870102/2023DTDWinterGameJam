@@ -34,6 +34,7 @@ public class PlayerPerformance : MonoBehaviour
     public GameObject Treasure, GameManager;
     public int TreasureOwner = -1;
     private bool Active = true;
+    private bool canUseSonar = true;
 
     private void Start()
     {
@@ -42,6 +43,7 @@ public class PlayerPerformance : MonoBehaviour
     private void Update()
     {
         // release sonar
+        if(!canUseSonar) return;
         if (Active && Input.GetKeyDown(DetectKeyCode))
         {
             OnPlayerAction eventParam = new OnPlayerAction();
@@ -92,6 +94,16 @@ public class PlayerPerformance : MonoBehaviour
     private void Awake()
     {
         DomainEvents.Register<OnPlayerTrigger>(OnPlayerTriggerEvent);
+        DomainEvents.Register<OnCDTrigger>(OnCDTriggerEvent);
+    }
+
+    private void OnCDTriggerEvent(OnCDTrigger param)
+    {
+        if(param.Player == gameObject)
+        {
+            canUseSonar = !param.IsCD;
+            Debug.Log("can use sonar:" + param.IsCD);
+        }
     }
     // to drop treasure
     private void OnPlayerTriggerEvent(OnPlayerTrigger param)
@@ -129,5 +141,6 @@ public class PlayerPerformance : MonoBehaviour
     private void OnDestroy()
     {
         DomainEvents.UnRegister<OnPlayerTrigger>(OnPlayerTriggerEvent);
+        DomainEvents.UnRegister<OnCDTrigger>(OnCDTriggerEvent);
     }
 }

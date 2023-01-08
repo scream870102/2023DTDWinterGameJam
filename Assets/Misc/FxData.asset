@@ -13,9 +13,37 @@ MonoBehaviour:
   m_Name: FxData
   m_EditorClassIdentifier: 
   rawData:
-  - Key: Stunned
+  - Key: StunnedStart
     Value: {fileID: 5811234105462895570, guid: 3125332dfa5e50b4ab648fa89dc146c2, type: 3}
   - Key: Healed
     Value: {fileID: 8809054773803636706, guid: 37c5a51ef12d1f0419d4b379b97ded34, type: 3}
   - Key: CounterSuccess
     Value: {fileID: 8809054773803636706, guid: 9818ae252b24b6042973a9c246bd0c2c, type: 3}
+  - Key: CounterFailed
+    Value: {fileID: 0}
+  - Key: DropTreasure
+    Value: {fileID: 0}
+  - Key: PickTreasure
+    Value: {fileID: 0}
+  rawAudioData:
+  - Key: Stunned
+    Value: {fileID: 8300000, guid: 7ac2d9c3db66e7f48ba282d2fa2905b9, type: 3}
+  - Key: CountDown
+    Value: {fileID: 8300000, guid: e4879cc2bac800441a9479c0ec91bd47, type: 3}
+  - Key: GetTreasure
+    Value: {fileID: 8300000, guid: f3edf416c960e2745a25fcba3258e070, type: 3}
+  - Key: DropTreasure
+    Value: {fileID: 0}
+  - Key: Win
+    Value: {fileID: 8300000, guid: 3ba69bf8ba34b054786c365e48fc21cf, type: 3}
+  - Key: GameEnd
+    Value: {fileID: 8300000, guid: 6ab1248b95be44741882cbc52f7a1905, type: 3}
+  - Key: ClickButton
+    Value: {fileID: 0}
+  - Key: SonarRelease
+    Value: {fileID: 8300000, guid: c28698d6c2f1c104db738e0d0c8b3091, type: 3}
+  - Key: CounterSuccess
+    Value: {fileID: 8300000, guid: c28698d6c2f1c104db738e0d0c8b3091, type: 3}
+  - Key: CounterFailed
+    Value: {fileID: 8300000, guid: c28698d6c2f1c104db738e0d0c8b3091, type: 3}
+  audioPlayerPrefab: {fileID: 3779444205231383247, guid: b7ab400f205baa640b75ea0635a678af, type: 3}
