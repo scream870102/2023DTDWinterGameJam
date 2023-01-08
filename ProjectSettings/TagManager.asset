@@ -4,8 +4,12 @@
 TagManager:
   serializedVersion: 2
   tags:
+  - Enterance
   - Treasure
-  - playertest
+  - Undefined
+  - Point
+  - Wall
+  - Exit
   layers:
   - Default
   - TransparentFX
@@ -13,7 +17,7 @@ TagManager:
   - 
   - Water
   - UI
-  - Obstacle
+  - 
   - 
   - 
   - 

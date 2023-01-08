@@ -29,11 +29,14 @@ public class OnPlayerAction : IDomainEvent
 public class PlayerPerformance : MonoBehaviour
 {
     private const string stunnedEndEffectName = "Healed";
+    private const string GetTreasureAudioName = "GetTreasure";
+    private const string DropTreasureAudioName = "DropTreasure";
     public KeyCode DetectKeyCode, CounterKeyCode;
     public GameObject[] players;
     public GameObject Treasure, GameManager;
     public int TreasureOwner = -1;
     private bool Active = true;
+    private bool canUseSonar = true;
 
     private void Start()
     {
@@ -42,6 +45,7 @@ public class PlayerPerformance : MonoBehaviour
     private void Update()
     {
         // release sonar
+        if(!canUseSonar) return;
         if (Active && Input.GetKeyDown(DetectKeyCode))
         {
             OnPlayerAction eventParam = new OnPlayerAction();
@@ -75,7 +79,10 @@ public class PlayerPerformance : MonoBehaviour
                 }
                 OnTreasuePick eventParam = new OnTreasuePick();
                 eventParam.Player = transform.gameObject;
+                Debug.Log("Pick");
+
                 DomainEvents.Raise<OnTreasuePick>(eventParam);
+                FxManager.Instance.PlayAudio(GetTreasureAudioName);
             }
         }
     }
@@ -92,6 +99,16 @@ public class PlayerPerformance : MonoBehaviour
     private void Awake()
     {
         DomainEvents.Register<OnPlayerTrigger>(OnPlayerTriggerEvent);
+        DomainEvents.Register<OnCDTrigger>(OnCDTriggerEvent);
+    }
+
+    private void OnCDTriggerEvent(OnCDTrigger param)
+    {
+        if(param.Player == gameObject)
+        {
+            canUseSonar = !param.IsCD;
+            Debug.Log("can use sonar:" + param.IsCD);
+        }
     }
     // to drop treasure
     private void OnPlayerTriggerEvent(OnPlayerTrigger param)
@@ -101,7 +118,10 @@ public class PlayerPerformance : MonoBehaviour
         {
             if (players[i] != param.Player && TreasureOwner == i)
             {
-                DropTreasure(players[i]); break;
+                DropTreasure(players[i]); 
+                Debug.Log("Drop");
+                FxManager.Instance.PlayAudio(DropTreasureAudioName);
+                break;
             }
         }
         if (IsSamePlayer(param))
@@ -129,5 +149,6 @@ public class PlayerPerformance : MonoBehaviour
     private void OnDestroy()
     {
         DomainEvents.UnRegister<OnPlayerTrigger>(OnPlayerTriggerEvent);
+        DomainEvents.UnRegister<OnCDTrigger>(OnCDTriggerEvent);
     }
 }
