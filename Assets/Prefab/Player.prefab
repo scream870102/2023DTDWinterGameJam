@@ -160,7 +160,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MoveSpeed: 5
-  StunnedTime: 2
+  StunnedTime: 4
   StunnedCheck: 0
   upKeyCode: 119
   downKeyCode: 115
