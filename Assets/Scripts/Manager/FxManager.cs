@@ -33,6 +33,7 @@ namespace BIGJ2023.Common
             {
                 return LeanPool.Spawn(collection[fxName]).GetComponent<ParticleSystem>();
             }
+            Debug.Log("missing effect " + fxName);
             return null;
         }
 
