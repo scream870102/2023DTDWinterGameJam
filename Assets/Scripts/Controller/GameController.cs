@@ -1,4 +1,6 @@
 using BIGJ2023.Common;
+using Scream.UniMO.Common;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,14 +9,22 @@ namespace BIGJ2023.GameSystem
 {
     public class GameController : MonoBehaviour
     {
-        private const string _triggerParam = "Result";
-
-        void Update()
+        [SerializeField] private string triggerParam = "Result";
+        private void Awake()
         {
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                GameFlow.Instance.Control.SetTrigger(_triggerParam);
-            }
+            DomainEvents.Register<OnWinnerDetermine>(OnWinnerDetemineEvent);
+        }
+
+        private void OnDestroy()
+        {
+            DomainEvents.UnRegister<OnWinnerDetermine>(OnWinnerDetemineEvent);
+        }
+
+        private void OnWinnerDetemineEvent(OnWinnerDetermine param)
+        {
+            int winnerIndex = PlayerManager.Instance.GetPlayerIndex(param.Winner);
+            UIController.WinnerIndex = winnerIndex;
+            GameFlow.Instance.Control.SetTrigger(triggerParam);
         }
     }
 }
