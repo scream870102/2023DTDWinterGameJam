@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 6190388256973611601}
   - component: {fileID: 6190388256973611612}
   - component: {fileID: 2761628006688418133}
+  - component: {fileID: 987271588720811109}
   m_Layer: 2
   m_Name: Player
   m_TagString: Player
@@ -160,6 +161,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MoveSpeed: 5
   StunnedTime: 2
+  StunnedCheck: 0
   upKeyCode: 119
   downKeyCode: 115
   leftKeyCode: 97
@@ -177,3 +179,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _sonarPreafb: {fileID: 6276262002949979867, guid: fcf8d2965f374bd4cafe35544863812d, type: 3}
+--- !u!95 &987271588720811109
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6190388256973611594}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 35a87b8743d68ee43a7b05893b02ac5c, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
