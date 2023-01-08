@@ -11,9 +11,7 @@ public class PlayerMove : MonoBehaviour
     public bool StunnedCheck = false;
     public KeyCode upKeyCode, downKeyCode, leftKeyCode, rightKeyCode;
 
-    void Start() {
-        StunnedTime = 4f;
-    }
+
 
     void Update() {
         transform.gameObject.GetComponent<Animator>().SetBool("Shift", false);

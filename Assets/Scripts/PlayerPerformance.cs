@@ -95,7 +95,7 @@ public class PlayerPerformance : MonoBehaviour
                 Debug.Log("Pick");
                 gameObject.GetComponent<Animator>().SetBool("Yeahh", true);
                 gameObject.GetComponent<PlayerMove>().StunnedCheck = true;
-                DelayDo(1.5f, () => { 
+                DelayDo(1f, () => { 
                     gameObject.GetComponent<Animator>().SetBool("Yeahh", false);
                     gameObject.GetComponent<PlayerMove>().StunnedCheck = false;
                 });
