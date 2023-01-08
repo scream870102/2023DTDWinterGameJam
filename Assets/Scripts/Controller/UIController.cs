@@ -13,6 +13,7 @@ namespace BIGJ2023.GameSystem
         [SerializeField] private Image winnerImg;
         [SerializeField] private string backToTitleParam;
         [SerializeField] private string continueParam;
+        [SerializeField] private string defaultParam;
         private void Start()
         {
             if (WinnerIndex != -1)
@@ -35,6 +36,11 @@ namespace BIGJ2023.GameSystem
         public void OnPlayAgainButtonClicked()
         {
             GameFlow.Instance.Control.SetTrigger(continueParam);
+        }
+
+        public void OAnimFin()
+        {
+            GameFlow.Instance.Control.SetTrigger(defaultParam);
         }
     }
 }
